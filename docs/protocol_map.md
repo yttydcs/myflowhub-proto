@@ -33,6 +33,8 @@
 - `ActionListSubtreeResp = "list_subtree_resp"`
 - `ActionNodeEcho = "node_echo"`
 - `ActionNodeEchoResp = "node_echo_resp"`
+- `ActionNodeInfo = "node_info"`
+- `ActionNodeInfoResp = "node_info_resp"`
 
 **Payload types**
 - `ConfigGetReq`
@@ -48,6 +50,8 @@
 - `NodeEchoReq`
 - `NodeEchoResp`
 - `NodeInfo`
+- `NodeInfoReq`
+- `NodeInfoResp`
 
 ## Auth (SubProto=2)
 

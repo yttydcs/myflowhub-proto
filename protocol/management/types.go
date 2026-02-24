@@ -7,6 +7,8 @@ const SubProtoManagement uint8 = 1
 const (
 	ActionNodeEcho        = "node_echo"
 	ActionNodeEchoResp    = "node_echo_resp"
+	ActionNodeInfo        = "node_info"
+	ActionNodeInfoResp    = "node_info_resp"
 	ActionListNodes       = "list_nodes"
 	ActionListNodesResp   = "list_nodes_resp"
 	ActionListSubtree     = "list_subtree"
@@ -32,6 +34,14 @@ type NodeEchoResp struct {
 	Code int    `json:"code"`
 	Msg  string `json:"msg,omitempty"`
 	Echo string `json:"echo,omitempty"`
+}
+
+type NodeInfoReq struct{}
+
+type NodeInfoResp struct {
+	Code  int               `json:"code"`
+	Msg   string            `json:"msg,omitempty"`
+	Items map[string]string `json:"items,omitempty"`
 }
 
 type ListNodesReq struct{}
