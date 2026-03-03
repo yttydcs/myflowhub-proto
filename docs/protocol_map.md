@@ -237,5 +237,9 @@
 <!-- END GENERATED -->
 
 ## Notes（Manual）
+- Management（Nodes）：
+  - `list_nodes`：仅返回 downstream children（直连子节点）；不包含 upstream parent link。
+  - `list_subtree`：返回 `list_nodes` 的结果 + self（不递归；更接近 “direct + self”）。
+  - `nodes[].has_children`：best-effort hint（可能缺失/为 false），客户端应以实际 `list_nodes` 结果为准。
 - Auth：login/register 使用签名（ES256）+ nonce + timestamp（具体语义以实现侧为准；此处仅做提示）。
 
