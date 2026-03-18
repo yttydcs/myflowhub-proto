@@ -225,14 +225,33 @@
 **Actions**
 - `ActionCall = "call"`
 - `ActionCallResp = "call_resp"`
+- `ActionCapHeartbeat = "cap_heartbeat"`
+- `ActionCapQuery = "cap_query"`
+- `ActionCapQueryResp = "cap_query_resp"`
+- `ActionCapSnapshot = "cap_snapshot"`
+- `ActionCapSyncResp = "cap_sync_resp"`
+- `ActionCapUpsert = "cap_upsert"`
+- `ActionCapWithdraw = "cap_withdraw"`
 
 **Payload types**
 - `CallReq`
 - `CallResp`
+- `CapHeartbeatReq`
+- `CapQueryReq`
+- `CapQueryResp`
+- `CapSnapshotReq`
+- `CapSyncResp`
+- `CapUpsertReq`
+- `CapWithdrawReq`
+- `CapabilityDescriptor`
+- `CapabilityKey`
+- `CapabilityRoute`
 - `Message`
 
 **Other constants**
 - `PermExecCall = "exec.call"`
+- `PermExecCapQuery = "exec.cap.query"`
+- `PermExecCapSync = "exec.cap.sync"`
 
 <!-- END GENERATED -->
 

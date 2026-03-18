@@ -25,8 +25,13 @@ type Message struct {
 }
 
 type Trigger struct {
-	Type    string `json:"type"`
-	EveryMs uint64 `json:"every_ms,omitempty"`
+	Type       string `json:"type"`
+	EveryMs    uint64 `json:"every_ms,omitempty"`
+	EventMode  string `json:"event_mode,omitempty"`
+	EventName  string `json:"event_name,omitempty"`
+	EventTopic string `json:"event_topic,omitempty"`
+	VarOwner   uint32 `json:"var_owner,omitempty"`
+	VarName    string `json:"var_name,omitempty"`
 }
 
 type Graph struct {
