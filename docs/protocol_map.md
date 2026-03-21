@@ -187,6 +187,8 @@
 ## Flow (SubProto=6)
 
 **Actions**
+- `ActionDelete = "delete"`
+- `ActionDeleteResp = "delete_resp"`
 - `ActionGet = "get"`
 - `ActionGetResp = "get_resp"`
 - `ActionList = "list"`
@@ -199,6 +201,8 @@
 - `ActionStatusResp = "status_resp"`
 
 **Payload types**
+- `DeleteReq`
+- `DeleteResp`
 - `Edge`
 - `FlowSummary`
 - `GetReq`
@@ -218,6 +222,7 @@
 - `Trigger`
 
 **Other constants**
+- `PermFlowDelete = "flow.delete"`
 - `PermFlowSet = "flow.set"`
 
 ## Exec (SubProto=7)

@@ -15,9 +15,14 @@ const (
 	ActionListResp   = "list_resp"
 	ActionGet        = "get"
 	ActionGetResp    = "get_resp"
+	ActionDelete     = "delete"
+	ActionDeleteResp = "delete_resp"
 )
 
-const PermFlowSet = "flow.set"
+const (
+	PermFlowSet    = "flow.set"
+	PermFlowDelete = "flow.delete"
+)
 
 type Message struct {
 	Action string          `json:"action"`
@@ -64,6 +69,20 @@ type SetReq struct {
 }
 
 type SetResp struct {
+	ReqID  string `json:"req_id"`
+	Code   int    `json:"code"`
+	Msg    string `json:"msg,omitempty"`
+	FlowID string `json:"flow_id,omitempty"`
+}
+
+type DeleteReq struct {
+	ReqID        string `json:"req_id"`
+	OriginNode   uint32 `json:"origin_node,omitempty"`
+	ExecutorNode uint32 `json:"executor_node,omitempty"`
+	FlowID       string `json:"flow_id"`
+}
+
+type DeleteResp struct {
 	ReqID  string `json:"req_id"`
 	Code   int    `json:"code"`
 	Msg    string `json:"msg,omitempty"`

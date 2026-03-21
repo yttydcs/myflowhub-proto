@@ -1,67 +1,72 @@
-# Plan - Proto：补充 Management Nodes（children-only）协议语义说明
+# Plan - Proto：新增 Flow 删除部署协议
 
 ## Workflow 信息
 - Repo：`MyFlowHub-Proto`
-- 分支：`docs/management-children-only`
-- Worktree：`d:\project\MyFlowHub3\worktrees\docs-proto-management-children-only`
-- Base：`origin/main`
-- 参考：`d:\project\MyFlowHub3\guide.md`（commit 信息中文）
+- Branch：`feat/proto-deploy-delete`
+- Worktree：`D:/project/MyFlowHub3/repo/MyFlowHub-Proto/repo/MyFlowHub-Proto/worktrees/feat-proto-deploy-delete`
+- Base：`main`
 
-## 背景 / 问题陈述
-- `protocol/management/types.go` 仅定义了动作名与 JSON payload schema，并未对 `list_nodes/list_subtree` 的“direct/subtree/parent/child”语义做明确说明。
-- 当前实现侧（`myflowhub-subproto/management`）存在“parent 连接也会被枚举进 list_nodes”的行为，导致 UI 侧将其误当 children 出现回指/duplicate。
-- 本 workflow 目标是 **在协议文档中明确语义**：Nodes 查询仅用于 children 枚举；不把 upstream(parent) 作为 children 返回。
+## 项目目标与当前状态
+- 目标：为 Flow 子协议新增“删除部署”能力，作为 Win“删除部署”与 SubProto 执行链路的协议基础。
+- 当前状态：`protocol/flow/types.go` 仅有 `set/run/status/list/get`，无 delete 动作与请求/响应结构。
 
-## 目标
-1) 在 `docs/protocol_map.md` 的手写 Notes 区域补充 Management Nodes 语义说明：
-   - `list_nodes`：children-only
-   - `list_subtree`：direct(children) + self（不递归）
-   - `has_children`：best-effort hint（客户端不得以此作为强约束）
-2) 不修改生成区块（`BEGIN/END GENERATED`），保持生成器可重复运行。
+## 可执行任务清单（Checklist）
+- [x] PROTO-DEL-1 新增 Flow delete action 与权限常量
+- [x] PROTO-DEL-2 新增 DeleteReq / DeleteResp 协议结构
+- [x] PROTO-DEL-3 同步协议映射文档（如适用）
+- [x] PROTO-DEL-4 回归测试与自检
 
-## 约束（边界）
-- wire 不改：不修改 `protocol/*/types.go` 的常量与 struct schema。
-- 文档只允许修改 `docs/protocol_map.md` 的手写区域（`<!-- END GENERATED -->` 之后）。
+## 任务明细
 
-## 验收标准
-- `docs/protocol_map.md` 明确写出上述语义，且不触碰生成区块。
-- `go test ./...`（建议 `GOWORK=off`）通过，确保文档门禁/生成器不受影响。
-
----
-
-## 3.1) 计划拆分（Checklist）
-
-### PMG0 - 归档旧 plan.md
-- 目标：避免旧 workflow plan 覆盖本次任务。
-- 已执行：`plan.md` → `docs/plan_archive/plan_archive_2026-03-03_proto-management-children-only-prev.md`
-- 验收条件：归档文件存在且可阅读。
-- 回滚点：撤销该移动提交。
-
-### PMG1 - 补充协议文档语义说明（Manual Notes）
-- 目标：在协议文档中明确 `list_nodes/list_subtree` 的 children-only 语义。
-- 涉及文件：
-  - `docs/protocol_map.md`
-- 修改范围：
-  - 仅允许修改 `<!-- END GENERATED -->` 之后的 `## Notes（Manual）` 区域（或其子段落）。
+### PROTO-DEL-1 新增 action/权限常量
+- 目标：在 Flow 协议常量中新增 `ActionDelete`、`ActionDeleteResp`、`PermFlowDelete`。
+- 涉及模块/文件：
+  - `protocol/flow/types.go`
 - 验收条件：
-  - 文档包含：
-    - `list_nodes`：仅返回 downstream children；不返回 upstream parent；
-    - `list_subtree`：返回 `list_nodes` 的结果 + self（不递归）；
-    - `has_children`：best-effort hint，客户端不得据此禁用展开。
-- 回滚点：revert 文档提交。
+  - 常量名称与字符串值稳定可复用。
+- 测试点：
+  - 编译通过；下游可引用常量。
+- 回滚点：
+  - 回退 `types.go` 新增常量。
 
-### PMG2 - 本地校验
-- 目标：避免破坏生成器门禁与仓库测试。
-- 验收命令（建议）：
-  - `$env:GOWORK='off'; go test ./... -count=1 -p 1`
+### PROTO-DEL-2 新增请求/响应结构
+- 目标：新增 delete 请求/响应结构，字段风格与 set/get/run/status 一致。
+- 涉及模块/文件：
+  - `protocol/flow/types.go`
+- 验收条件：
+  - `DeleteReq` 包含 `req_id/origin_node/executor_node/flow_id`。
+  - `DeleteResp` 包含 `req_id/code/msg/flow_id`。
+- 测试点：
+  - `go test ./... -count=1` 通过。
+- 回滚点：
+  - 回退新增结构体定义。
 
-### PMG3 - Code Review（阶段 3.3）
-- 目标：检查文档是否清晰、准确、与实现兼容，且没有编辑生成区块。
+### PROTO-DEL-3 同步协议映射文档（如适用）
+- 目标：确保协议映射文档可体现新 action/type。
+- 涉及模块/文件：
+  - `docs/protocol_map.md`（若由生成工具维护则按工具更新）
+- 验收条件：
+  - Flow actions/types 文档包含 delete/delete_resp 与新增 payload type。
+- 测试点：
+  - 文档生成命令可执行或文档静态检查无格式问题。
+- 回滚点：
+  - 回退文档变更。
 
-### PMG4 - 归档变更（阶段 4）
-- 目标：补齐可审计变更说明。
-- 涉及文件：
-  - `docs/change/2026-03-03_management-nodes-children-only-spec.md`（新增）
-- 必含内容：
-  - 变更背景/目标、具体变更内容、任务映射、测试与验证方式/结果、潜在影响与回滚方案。
+### PROTO-DEL-4 回归测试与自检
+- 目标：保证 Proto 仓无计划外变更。
+- 涉及模块/文件：
+  - 全仓
+- 验收条件：
+  - `go test ./... -count=1` 通过。
+- 测试点：
+  - 编译与单测。
+- 回滚点：
+  - 回退本 workflow 所有提交。
+
+## 依赖关系
+- 本 workflow 先于 SubProto/Win 实现。
+
+## 风险与注意事项
+- 风险：常量命名与下游实现不一致会导致 action 无法匹配。
+- 注意：仅做协议字典变更，不引入运行时逻辑。
 
