@@ -78,6 +78,7 @@ type ConfigListResp struct {
 
 type NodeInfo struct {
 	NodeID      uint32 `json:"node_id"`
+	DisplayName string `json:"display_name,omitempty"`
 	HasChildren bool   `json:"has_children,omitempty"`
 }
 
