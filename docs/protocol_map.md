@@ -56,6 +56,8 @@
 ## Auth (SubProto=2)
 
 **Actions**
+- `ActionApproveRegister = "approve_register"`
+- `ActionApproveRegisterResp = "approve_register_resp"`
 - `ActionAssistLogin = "assist_login"`
 - `ActionAssistLoginResp = "assist_login_resp"`
 - `ActionAssistOffline = "assist_offline"`
@@ -65,6 +67,10 @@
 - `ActionAssistRegisterResp = "assist_register_resp"`
 - `ActionGetPerms = "get_perms"`
 - `ActionGetPermsResp = "get_perms_resp"`
+- `ActionIssueRegisterPermit = "issue_register_permit"`
+- `ActionIssueRegisterPermitResp = "issue_register_permit_resp"`
+- `ActionListPendingRegisters = "list_pending_registers"`
+- `ActionListPendingRegistersResp = "list_pending_registers_resp"`
 - `ActionListRoles = "list_roles"`
 - `ActionListRolesResp = "list_roles_resp"`
 - `ActionLogin = "login"`
@@ -74,22 +80,37 @@
 - `ActionPermsSnapshot = "perms_snapshot"`
 - `ActionRegister = "register"`
 - `ActionRegisterResp = "register_resp"`
+- `ActionRejectRegister = "reject_register"`
+- `ActionRejectRegisterResp = "reject_register_resp"`
 - `ActionRevoke = "revoke"`
+- `ActionRevokeRegisterPermit = "revoke_register_permit"`
+- `ActionRevokeRegisterPermitResp = "revoke_register_permit_resp"`
 - `ActionRevokeResp = "revoke_resp"`
 - `ActionUpLogin = "up_login"`
 - `ActionUpLoginResp = "up_login_resp"`
 
 **Payload types**
+- `ApproveRegisterReq`
+- `ApproveRegisterResp`
 - `InvalidateData`
+- `IssueRegisterPermitReq`
+- `IssueRegisterPermitResp`
+- `ListPendingRegistersReq`
+- `ListPendingRegistersResp`
 - `ListRolesReq`
 - `LoginData`
 - `Message`
 - `OfflineData`
+- `PendingRegisterInfo`
 - `PermsQueryData`
 - `QueryCredData`
 - `RegisterData`
+- `RejectRegisterReq`
+- `RejectRegisterResp`
 - `RespData`
 - `RevokeData`
+- `RevokeRegisterPermitReq`
+- `RevokeRegisterPermitResp`
 - `RolePermEntry`
 - `UpLoginData`
 
