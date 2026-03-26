@@ -65,6 +65,7 @@
 - `ActionAssistQueryCredResp = "assist_query_credential_resp"`
 - `ActionAssistRegister = "assist_register"`
 - `ActionAssistRegisterResp = "assist_register_resp"`
+- `ActionAuthorityPolicySync = "authority_policy_sync"`
 - `ActionGetPerms = "get_perms"`
 - `ActionGetPermsResp = "get_perms_resp"`
 - `ActionIssueRegisterPermit = "issue_register_permit"`
@@ -92,6 +93,7 @@
 **Payload types**
 - `ApproveRegisterReq`
 - `ApproveRegisterResp`
+- `AuthorityPolicySyncData`
 - `InvalidateData`
 - `IssueRegisterPermitReq`
 - `IssueRegisterPermitResp`

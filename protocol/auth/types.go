@@ -25,6 +25,7 @@ const (
 	ActionListRolesResp            = "list_roles_resp"
 	ActionPermsInvalidate          = "perms_invalidate"
 	ActionPermsSnapshot            = "perms_snapshot"
+	ActionAuthorityPolicySync      = "authority_policy_sync"
 	ActionListPendingRegisters     = "list_pending_registers"
 	ActionListPendingRegistersResp = "list_pending_registers_resp"
 	ActionApproveRegister          = "approve_register"
@@ -108,6 +109,13 @@ type InvalidateData struct {
 	NodeIDs []uint32 `json:"node_ids,omitempty"`
 	Reason  string   `json:"reason,omitempty"`
 	Refresh bool     `json:"refresh,omitempty"`
+}
+
+type AuthorityPolicySyncData struct {
+	Mode                 string `json:"mode,omitempty"`
+	EffectiveAuthorityID uint32 `json:"effective_authority_id,omitempty"`
+	Epoch                uint64 `json:"epoch,omitempty"`
+	TTLSec               uint32 `json:"ttl_sec,omitempty"`
 }
 
 type RolePermEntry struct {
