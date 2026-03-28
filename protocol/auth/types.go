@@ -28,6 +28,8 @@ const (
 	ActionAuthorityPolicySync      = "authority_policy_sync"
 	ActionListPendingRegisters     = "list_pending_registers"
 	ActionListPendingRegistersResp = "list_pending_registers_resp"
+	ActionListRegisterPermits      = "list_register_permits"
+	ActionListRegisterPermitsResp  = "list_register_permits_resp"
 	ActionApproveRegister          = "approve_register"
 	ActionApproveRegisterResp      = "approve_register_resp"
 	ActionRejectRegister           = "reject_register"
@@ -151,6 +153,28 @@ type ListPendingRegistersResp struct {
 	Msg   string                `json:"msg,omitempty"`
 	Total int                   `json:"total"`
 	Items []PendingRegisterInfo `json:"items,omitempty"`
+}
+
+type RegisterPermitInfo struct {
+	Permit    string `json:"permit,omitempty"`
+	DeviceID  string `json:"device_id,omitempty"`
+	Role      string `json:"role,omitempty"`
+	IssuedBy  uint32 `json:"issued_by,omitempty"`
+	IssuedAt  int64  `json:"issued_at,omitempty"`
+	ExpiresAt int64  `json:"expires_at,omitempty"`
+}
+
+type ListRegisterPermitsReq struct {
+	Offset   int    `json:"offset,omitempty"`
+	Limit    int    `json:"limit,omitempty"`
+	DeviceID string `json:"device_id,omitempty"`
+}
+
+type ListRegisterPermitsResp struct {
+	Code  int                  `json:"code"`
+	Msg   string               `json:"msg,omitempty"`
+	Total int                  `json:"total"`
+	Items []RegisterPermitInfo `json:"items,omitempty"`
 }
 
 type ApproveRegisterReq struct {

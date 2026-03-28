@@ -72,6 +72,8 @@
 - `ActionIssueRegisterPermitResp = "issue_register_permit_resp"`
 - `ActionListPendingRegisters = "list_pending_registers"`
 - `ActionListPendingRegistersResp = "list_pending_registers_resp"`
+- `ActionListRegisterPermits = "list_register_permits"`
+- `ActionListRegisterPermitsResp = "list_register_permits_resp"`
 - `ActionListRoles = "list_roles"`
 - `ActionListRolesResp = "list_roles_resp"`
 - `ActionLogin = "login"`
@@ -99,6 +101,8 @@
 - `IssueRegisterPermitResp`
 - `ListPendingRegistersReq`
 - `ListPendingRegistersResp`
+- `ListRegisterPermitsReq`
+- `ListRegisterPermitsResp`
 - `ListRolesReq`
 - `LoginData`
 - `Message`
@@ -107,6 +111,7 @@
 - `PermsQueryData`
 - `QueryCredData`
 - `RegisterData`
+- `RegisterPermitInfo`
 - `RejectRegisterReq`
 - `RejectRegisterResp`
 - `RespData`
