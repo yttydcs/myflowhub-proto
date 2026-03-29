@@ -16,6 +16,8 @@
 
 ## Current Entries
 
+- [2026-03-29_proto-stream-mainline-merge.md](2026-03-29_proto-stream-mainline-merge.md)
+- [2026-03-28_stream-wire.md](2026-03-28_stream-wire.md)
 - [2026-03-28_proto-auth-permit-list-wire.md](2026-03-28_proto-auth-permit-list-wire.md)
 - [2026-03-26_auth-semi-central-authority.md](2026-03-26_auth-semi-central-authority.md)
 - [2026-03-25_proto-flow-delete-release.md](2026-03-25_proto-flow-delete-release.md)
