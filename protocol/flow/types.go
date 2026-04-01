@@ -11,6 +11,8 @@ const (
 	ActionRunResp    = "run_resp"
 	ActionStatus     = "status"
 	ActionStatusResp = "status_resp"
+	ActionDetail     = "detail"
+	ActionDetailResp = "detail_resp"
 	ActionList       = "list"
 	ActionListResp   = "list_resp"
 	ActionGet        = "get"
@@ -128,6 +130,28 @@ type StatusResp struct {
 	RunID        string       `json:"run_id,omitempty"`
 	Status       string       `json:"status,omitempty"`
 	Nodes        []NodeStatus `json:"nodes,omitempty"`
+}
+
+type DetailReq struct {
+	ReqID        string `json:"req_id"`
+	OriginNode   uint32 `json:"origin_node,omitempty"`
+	ExecutorNode uint32 `json:"executor_node,omitempty"`
+	FlowID       string `json:"flow_id"`
+	RunID        string `json:"run_id,omitempty"`
+	NodeID       string `json:"node_id"`
+	Path         string `json:"path,omitempty"`
+}
+
+type DetailResp struct {
+	ReqID        string          `json:"req_id"`
+	Code         int             `json:"code"`
+	Msg          string          `json:"msg,omitempty"`
+	ExecutorNode uint32          `json:"executor_node,omitempty"`
+	FlowID       string          `json:"flow_id,omitempty"`
+	RunID        string          `json:"run_id,omitempty"`
+	Path         string          `json:"path,omitempty"`
+	Node         *NodeStatus     `json:"node,omitempty"`
+	Result       json.RawMessage `json:"result,omitempty"`
 }
 
 type ListReq struct {

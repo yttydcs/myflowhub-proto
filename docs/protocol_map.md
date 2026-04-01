@@ -218,6 +218,8 @@
 **Actions**
 - `ActionDelete = "delete"`
 - `ActionDeleteResp = "delete_resp"`
+- `ActionDetail = "detail"`
+- `ActionDetailResp = "detail_resp"`
 - `ActionGet = "get"`
 - `ActionGetResp = "get_resp"`
 - `ActionList = "list"`
@@ -232,6 +234,8 @@
 **Payload types**
 - `DeleteReq`
 - `DeleteResp`
+- `DetailReq`
+- `DetailResp`
 - `Edge`
 - `FlowSummary`
 - `GetReq`
