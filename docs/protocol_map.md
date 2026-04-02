@@ -216,6 +216,8 @@
 ## Flow (SubProto=6)
 
 **Actions**
+- `ActionCancelRun = "cancel_run"`
+- `ActionCancelRunResp = "cancel_run_resp"`
 - `ActionDelete = "delete"`
 - `ActionDeleteResp = "delete_resp"`
 - `ActionDetail = "detail"`
@@ -224,6 +226,8 @@
 - `ActionGetResp = "get_resp"`
 - `ActionList = "list"`
 - `ActionListResp = "list_resp"`
+- `ActionListRuns = "list_runs"`
+- `ActionListRunsResp = "list_runs_resp"`
 - `ActionRun = "run"`
 - `ActionRunResp = "run_resp"`
 - `ActionSet = "set"`
@@ -232,6 +236,8 @@
 - `ActionStatusResp = "status_resp"`
 
 **Payload types**
+- `CancelRunReq`
+- `CancelRunResp`
 - `DeleteReq`
 - `DeleteResp`
 - `DetailReq`
@@ -243,11 +249,14 @@
 - `Graph`
 - `ListReq`
 - `ListResp`
+- `ListRunsReq`
+- `ListRunsResp`
 - `Message`
 - `Node`
 - `NodeStatus`
 - `RunReq`
 - `RunResp`
+- `RunSummary`
 - `SetReq`
 - `SetResp`
 - `StatusReq`
@@ -256,6 +265,8 @@
 
 **Other constants**
 - `PermFlowDelete = "flow.delete"`
+- `PermFlowRead = "flow.read"`
+- `PermFlowRun = "flow.run"`
 - `PermFlowSet = "flow.set"`
 
 ## Exec (SubProto=7)

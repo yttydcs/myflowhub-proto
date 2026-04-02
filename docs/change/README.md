@@ -16,6 +16,12 @@
 
 ## Current Entries
 
+- [2026-04-02_proto-flow-trigger-dedup-window.md](2026-04-02_proto-flow-trigger-dedup-window.md)
+- [2026-04-02_proto-flow-active-run-limit.md](2026-04-02_proto-flow-active-run-limit.md)
+- [2026-04-02_proto-flow-retry-backoff.md](2026-04-02_proto-flow-retry-backoff.md)
+- [2026-04-02_proto-flow-permission-refinement.md](2026-04-02_proto-flow-permission-refinement.md)
+- [2026-04-02_proto-flow-list-runs.md](2026-04-02_proto-flow-list-runs.md)
+- [2026-04-02_proto-flow-cancel-run.md](2026-04-02_proto-flow-cancel-run.md)
 - [2026-04-02_proto-flow-detail.md](2026-04-02_proto-flow-detail.md)
 - [2026-03-29_proto-stream-mainline-merge.md](2026-03-29_proto-stream-mainline-merge.md)
 - [2026-03-28_stream-wire.md](2026-03-28_stream-wire.md)

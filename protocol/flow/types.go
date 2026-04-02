@@ -5,25 +5,31 @@ import "encoding/json"
 const SubProtoFlow uint8 = 6
 
 const (
-	ActionSet        = "set"
-	ActionSetResp    = "set_resp"
-	ActionRun        = "run"
-	ActionRunResp    = "run_resp"
-	ActionStatus     = "status"
-	ActionStatusResp = "status_resp"
-	ActionDetail     = "detail"
-	ActionDetailResp = "detail_resp"
-	ActionList       = "list"
-	ActionListResp   = "list_resp"
-	ActionGet        = "get"
-	ActionGetResp    = "get_resp"
-	ActionDelete     = "delete"
-	ActionDeleteResp = "delete_resp"
+	ActionSet           = "set"
+	ActionSetResp       = "set_resp"
+	ActionRun           = "run"
+	ActionRunResp       = "run_resp"
+	ActionCancelRun     = "cancel_run"
+	ActionCancelRunResp = "cancel_run_resp"
+	ActionStatus        = "status"
+	ActionStatusResp    = "status_resp"
+	ActionDetail        = "detail"
+	ActionDetailResp    = "detail_resp"
+	ActionListRuns      = "list_runs"
+	ActionListRunsResp  = "list_runs_resp"
+	ActionList          = "list"
+	ActionListResp      = "list_resp"
+	ActionGet           = "get"
+	ActionGetResp       = "get_resp"
+	ActionDelete        = "delete"
+	ActionDeleteResp    = "delete_resp"
 )
 
 const (
 	PermFlowSet    = "flow.set"
 	PermFlowDelete = "flow.delete"
+	PermFlowRun    = "flow.run"
+	PermFlowRead   = "flow.read"
 )
 
 type Message struct {
@@ -32,13 +38,14 @@ type Message struct {
 }
 
 type Trigger struct {
-	Type       string `json:"type"`
-	EveryMs    uint64 `json:"every_ms,omitempty"`
-	EventMode  string `json:"event_mode,omitempty"`
-	EventName  string `json:"event_name,omitempty"`
-	EventTopic string `json:"event_topic,omitempty"`
-	VarOwner   uint32 `json:"var_owner,omitempty"`
-	VarName    string `json:"var_name,omitempty"`
+	Type          string `json:"type"`
+	EveryMs       uint64 `json:"every_ms,omitempty"`
+	DedupWindowMs *int   `json:"dedup_window_ms,omitempty"`
+	EventMode     string `json:"event_mode,omitempty"`
+	EventName     string `json:"event_name,omitempty"`
+	EventTopic    string `json:"event_topic,omitempty"`
+	VarOwner      uint32 `json:"var_owner,omitempty"`
+	VarName       string `json:"var_name,omitempty"`
 }
 
 type Graph struct {
@@ -47,12 +54,13 @@ type Graph struct {
 }
 
 type Node struct {
-	ID        string          `json:"id"`
-	Kind      string          `json:"kind"`
-	AllowFail bool            `json:"allow_fail,omitempty"`
-	Retry     *int            `json:"retry,omitempty"`
-	TimeoutMs *int            `json:"timeout_ms,omitempty"`
-	Spec      json.RawMessage `json:"spec"`
+	ID             string          `json:"id"`
+	Kind           string          `json:"kind"`
+	AllowFail      bool            `json:"allow_fail,omitempty"`
+	Retry          *int            `json:"retry,omitempty"`
+	RetryBackoffMs *int            `json:"retry_backoff_ms,omitempty"`
+	TimeoutMs      *int            `json:"timeout_ms,omitempty"`
+	Spec           json.RawMessage `json:"spec"`
 }
 
 type Edge struct {
@@ -61,13 +69,14 @@ type Edge struct {
 }
 
 type SetReq struct {
-	ReqID        string  `json:"req_id"`
-	OriginNode   uint32  `json:"origin_node,omitempty"`
-	ExecutorNode uint32  `json:"executor_node,omitempty"`
-	FlowID       string  `json:"flow_id"`
-	Name         string  `json:"name,omitempty"`
-	Trigger      Trigger `json:"trigger"`
-	Graph        Graph   `json:"graph"`
+	ReqID         string  `json:"req_id"`
+	OriginNode    uint32  `json:"origin_node,omitempty"`
+	ExecutorNode  uint32  `json:"executor_node,omitempty"`
+	FlowID        string  `json:"flow_id"`
+	Name          string  `json:"name,omitempty"`
+	MaxActiveRuns *int    `json:"max_active_runs,omitempty"`
+	Trigger       Trigger `json:"trigger"`
+	Graph         Graph   `json:"graph"`
 }
 
 type SetResp struct {
@@ -104,6 +113,24 @@ type RunResp struct {
 	Msg    string `json:"msg,omitempty"`
 	FlowID string `json:"flow_id,omitempty"`
 	RunID  string `json:"run_id,omitempty"`
+}
+
+type CancelRunReq struct {
+	ReqID        string `json:"req_id"`
+	OriginNode   uint32 `json:"origin_node,omitempty"`
+	ExecutorNode uint32 `json:"executor_node,omitempty"`
+	FlowID       string `json:"flow_id"`
+	RunID        string `json:"run_id"`
+}
+
+type CancelRunResp struct {
+	ReqID        string `json:"req_id"`
+	Code         int    `json:"code"`
+	Msg          string `json:"msg,omitempty"`
+	ExecutorNode uint32 `json:"executor_node,omitempty"`
+	FlowID       string `json:"flow_id,omitempty"`
+	RunID        string `json:"run_id,omitempty"`
+	Status       string `json:"status,omitempty"`
 }
 
 type StatusReq struct {
@@ -154,6 +181,31 @@ type DetailResp struct {
 	Result       json.RawMessage `json:"result,omitempty"`
 }
 
+type ListRunsReq struct {
+	ReqID        string `json:"req_id"`
+	OriginNode   uint32 `json:"origin_node,omitempty"`
+	ExecutorNode uint32 `json:"executor_node,omitempty"`
+	FlowID       string `json:"flow_id"`
+	Limit        uint32 `json:"limit,omitempty"`
+}
+
+type RunSummary struct {
+	RunID       string `json:"run_id"`
+	Status      string `json:"status"`
+	StartedAtMs int64  `json:"started_at_ms,omitempty"`
+	EndedAtMs   int64  `json:"ended_at_ms,omitempty"`
+	Msg         string `json:"msg,omitempty"`
+}
+
+type ListRunsResp struct {
+	ReqID        string       `json:"req_id"`
+	Code         int          `json:"code"`
+	Msg          string       `json:"msg,omitempty"`
+	ExecutorNode uint32       `json:"executor_node,omitempty"`
+	FlowID       string       `json:"flow_id,omitempty"`
+	Runs         []RunSummary `json:"runs,omitempty"`
+}
+
 type ListReq struct {
 	ReqID        string `json:"req_id"`
 	OriginNode   uint32 `json:"origin_node,omitempty"`
@@ -184,12 +236,13 @@ type GetReq struct {
 }
 
 type GetResp struct {
-	ReqID        string  `json:"req_id"`
-	Code         int     `json:"code"`
-	Msg          string  `json:"msg,omitempty"`
-	ExecutorNode uint32  `json:"executor_node,omitempty"`
-	FlowID       string  `json:"flow_id,omitempty"`
-	Name         string  `json:"name,omitempty"`
-	Trigger      Trigger `json:"trigger,omitempty"`
-	Graph        Graph   `json:"graph,omitempty"`
+	ReqID         string  `json:"req_id"`
+	Code          int     `json:"code"`
+	Msg           string  `json:"msg,omitempty"`
+	ExecutorNode  uint32  `json:"executor_node,omitempty"`
+	FlowID        string  `json:"flow_id,omitempty"`
+	Name          string  `json:"name,omitempty"`
+	MaxActiveRuns *int    `json:"max_active_runs,omitempty"`
+	Trigger       Trigger `json:"trigger,omitempty"`
+	Graph         Graph   `json:"graph,omitempty"`
 }
