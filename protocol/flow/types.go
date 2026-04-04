@@ -40,6 +40,7 @@ type Message struct {
 type Trigger struct {
 	Type          string `json:"type"`
 	EveryMs       uint64 `json:"every_ms,omitempty"`
+	Cron          string `json:"cron,omitempty"`
 	DedupWindowMs *int   `json:"dedup_window_ms,omitempty"`
 	EventMode     string `json:"event_mode,omitempty"`
 	EventName     string `json:"event_name,omitempty"`
@@ -66,6 +67,7 @@ type Node struct {
 type Edge struct {
 	From string `json:"from"`
 	To   string `json:"to"`
+	Case string `json:"case,omitempty"`
 }
 
 type SetReq struct {
