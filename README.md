@@ -20,7 +20,25 @@ MyFlowHub 的协议定义仓库（types/常量/协议号等）。
 
 ---
 
-## 协议映射文档（半自动生成）
+## 协议文档与生成产物
+
+本仓库维护两类 canonical 衍生物：
+
+- `docs/protocol_map.md`
+  - 子协议、action、type、常量总览
+- `docs/flow_contract.md`
+  - Flow graph/node contract 的 typed 说明
+- `generated/flow_contract.ts`
+  - 供下游同步消费的 Flow contract TypeScript 类型产物
+
+### Flow contract 生成 / 校验命令
+
+- 更新 Flow contract：
+  - `go run ./cmd/flowcontractgen -write -md-out docs/flow_contract.md -ts-out generated/flow_contract.ts`
+- 校验 Flow contract 是否最新：
+  - `go run ./cmd/flowcontractgen -check -md-out docs/flow_contract.md -ts-out generated/flow_contract.ts`
+
+### 协议映射文档（半自动生成）
 
 本仓库维护 canonical 文档：`docs/protocol_map.md`。
 

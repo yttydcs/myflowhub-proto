@@ -40,12 +40,79 @@ type Message struct {
 type Trigger struct {
 	Type          string `json:"type"`
 	EveryMs       uint64 `json:"every_ms,omitempty"`
+	Cron          string `json:"cron,omitempty"`
 	DedupWindowMs *int   `json:"dedup_window_ms,omitempty"`
 	EventMode     string `json:"event_mode,omitempty"`
 	EventName     string `json:"event_name,omitempty"`
 	EventTopic    string `json:"event_topic,omitempty"`
 	VarOwner      uint32 `json:"var_owner,omitempty"`
 	VarName       string `json:"var_name,omitempty"`
+}
+
+type NodeKind string
+
+const (
+	NodeKindCall      NodeKind = "call"
+	NodeKindCompose   NodeKind = "compose"
+	NodeKindTransform NodeKind = "transform"
+	NodeKindSetVar    NodeKind = "set_var"
+	NodeKindBranch    NodeKind = "branch"
+	NodeKindForeach   NodeKind = "foreach"
+	NodeKindSubflow   NodeKind = "subflow"
+)
+
+var SupportedNodeKinds = []NodeKind{
+	NodeKindCall,
+	NodeKindCompose,
+	NodeKindTransform,
+	NodeKindSetVar,
+	NodeKindBranch,
+	NodeKindForeach,
+	NodeKindSubflow,
+}
+
+type BindingSourceKind string
+
+const (
+	BindingSourceNodeResult BindingSourceKind = "node_result"
+	BindingSourceTrigger    BindingSourceKind = "trigger"
+	BindingSourceFlowMeta   BindingSourceKind = "flow_meta"
+	BindingSourceRunMeta    BindingSourceKind = "run_meta"
+	BindingSourceLoopItem   BindingSourceKind = "loop_item"
+	BindingSourceLoopIndex  BindingSourceKind = "loop_index"
+	BindingSourceFlowVar    BindingSourceKind = "flow_var"
+)
+
+var SupportedBindingSourceKinds = []BindingSourceKind{
+	BindingSourceNodeResult,
+	BindingSourceTrigger,
+	BindingSourceFlowMeta,
+	BindingSourceRunMeta,
+	BindingSourceLoopItem,
+	BindingSourceLoopIndex,
+	BindingSourceFlowVar,
+}
+
+type BranchMatchOp string
+
+const (
+	BranchMatchEq     BranchMatchOp = "eq"
+	BranchMatchNe     BranchMatchOp = "ne"
+	BranchMatchGt     BranchMatchOp = "gt"
+	BranchMatchGte    BranchMatchOp = "gte"
+	BranchMatchLt     BranchMatchOp = "lt"
+	BranchMatchLte    BranchMatchOp = "lte"
+	BranchMatchExists BranchMatchOp = "exists"
+)
+
+var SupportedBranchMatchOps = []BranchMatchOp{
+	BranchMatchEq,
+	BranchMatchNe,
+	BranchMatchGt,
+	BranchMatchGte,
+	BranchMatchLt,
+	BranchMatchLte,
+	BranchMatchExists,
 }
 
 type Graph struct {
@@ -55,7 +122,7 @@ type Graph struct {
 
 type Node struct {
 	ID             string          `json:"id"`
-	Kind           string          `json:"kind"`
+	Kind           NodeKind        `json:"kind"`
 	AllowFail      bool            `json:"allow_fail,omitempty"`
 	Retry          *int            `json:"retry,omitempty"`
 	RetryBackoffMs *int            `json:"retry_backoff_ms,omitempty"`
@@ -66,6 +133,95 @@ type Node struct {
 type Edge struct {
 	From string `json:"from"`
 	To   string `json:"to"`
+	Case string `json:"case,omitempty"`
+}
+
+type NodeUILayout struct {
+	X int `json:"x,omitempty"`
+	Y int `json:"y,omitempty"`
+}
+
+type BindingSource struct {
+	Kind   BindingSourceKind `json:"kind"`
+	NodeID string            `json:"node_id,omitempty"`
+	Name   string            `json:"name,omitempty"`
+	Path   string            `json:"path,omitempty"`
+	Field  string            `json:"field,omitempty"`
+}
+
+type InputBinding struct {
+	To       string        `json:"to"`
+	Source   BindingSource `json:"source"`
+	Required bool          `json:"required,omitempty"`
+}
+
+type CallSpec struct {
+	Target       uint32          `json:"target,omitempty"`
+	Method       string          `json:"method"`
+	ArgsTemplate json.RawMessage `json:"args_template,omitempty"`
+	Inputs       []InputBinding  `json:"inputs,omitempty"`
+	UI           *NodeUILayout   `json:"_ui,omitempty"`
+}
+
+type ComposeSpec struct {
+	Template json.RawMessage `json:"template"`
+	Inputs   []InputBinding  `json:"inputs,omitempty"`
+	UI       *NodeUILayout   `json:"_ui,omitempty"`
+}
+
+type SetVarSpec struct {
+	Name     string          `json:"name"`
+	Template json.RawMessage `json:"template,omitempty"`
+	Inputs   []InputBinding  `json:"inputs,omitempty"`
+	UI       *NodeUILayout   `json:"_ui,omitempty"`
+}
+
+type TransformExpr struct {
+	Literal  json.RawMessage          `json:"literal,omitempty"`
+	Source   *BindingSource           `json:"source,omitempty"`
+	Required *bool                    `json:"required,omitempty"`
+	Op       string                   `json:"op,omitempty"`
+	Args     []TransformExpr          `json:"args,omitempty"`
+	Object   map[string]TransformExpr `json:"object,omitempty"`
+	Array    []TransformExpr          `json:"array,omitempty"`
+}
+
+type TransformSpec struct {
+	Expr TransformExpr `json:"expr"`
+	UI   *NodeUILayout `json:"_ui,omitempty"`
+}
+
+type BranchMatch struct {
+	Source BindingSource   `json:"source"`
+	Op     BranchMatchOp   `json:"op"`
+	Value  json.RawMessage `json:"value,omitempty"`
+}
+
+type BranchCase struct {
+	Name  string      `json:"name"`
+	Match BranchMatch `json:"match"`
+}
+
+type BranchSpec struct {
+	Cases       []BranchCase  `json:"cases"`
+	DefaultCase string        `json:"default_case,omitempty"`
+	UI          *NodeUILayout `json:"_ui,omitempty"`
+}
+
+type ForeachSpec struct {
+	Source       BindingSource `json:"source"`
+	Required     *bool         `json:"required,omitempty"`
+	Body         Graph         `json:"body"`
+	ResultNodeID string        `json:"result_node_id"`
+	UI           *NodeUILayout `json:"_ui,omitempty"`
+}
+
+type SubflowSpec struct {
+	FlowID        string          `json:"flow_id"`
+	InputTemplate json.RawMessage `json:"input_template,omitempty"`
+	Inputs        []InputBinding  `json:"inputs,omitempty"`
+	ResultNodeID  string          `json:"result_node_id,omitempty"`
+	UI            *NodeUILayout   `json:"_ui,omitempty"`
 }
 
 type SetReq struct {

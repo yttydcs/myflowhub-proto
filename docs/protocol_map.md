@@ -236,34 +236,71 @@
 - `ActionStatusResp = "status_resp"`
 
 **Payload types**
+- `BindingSource`
+- `BindingSourceKind`
+- `BranchCase`
+- `BranchMatch`
+- `BranchMatchOp`
+- `BranchSpec`
+- `CallSpec`
 - `CancelRunReq`
 - `CancelRunResp`
+- `ComposeSpec`
 - `DeleteReq`
 - `DeleteResp`
 - `DetailReq`
 - `DetailResp`
 - `Edge`
 - `FlowSummary`
+- `ForeachSpec`
 - `GetReq`
 - `GetResp`
 - `Graph`
+- `InputBinding`
 - `ListReq`
 - `ListResp`
 - `ListRunsReq`
 - `ListRunsResp`
 - `Message`
 - `Node`
+- `NodeKind`
 - `NodeStatus`
+- `NodeUILayout`
 - `RunReq`
 - `RunResp`
 - `RunSummary`
 - `SetReq`
 - `SetResp`
+- `SetVarSpec`
 - `StatusReq`
 - `StatusResp`
+- `SubflowSpec`
+- `TransformExpr`
+- `TransformSpec`
 - `Trigger`
 
 **Other constants**
+- `BindingSourceFlowMeta = "flow_meta"`
+- `BindingSourceFlowVar = "flow_var"`
+- `BindingSourceLoopIndex = "loop_index"`
+- `BindingSourceLoopItem = "loop_item"`
+- `BindingSourceNodeResult = "node_result"`
+- `BindingSourceRunMeta = "run_meta"`
+- `BindingSourceTrigger = "trigger"`
+- `BranchMatchEq = "eq"`
+- `BranchMatchExists = "exists"`
+- `BranchMatchGt = "gt"`
+- `BranchMatchGte = "gte"`
+- `BranchMatchLt = "lt"`
+- `BranchMatchLte = "lte"`
+- `BranchMatchNe = "ne"`
+- `NodeKindBranch = "branch"`
+- `NodeKindCall = "call"`
+- `NodeKindCompose = "compose"`
+- `NodeKindForeach = "foreach"`
+- `NodeKindSetVar = "set_var"`
+- `NodeKindSubflow = "subflow"`
+- `NodeKindTransform = "transform"`
 - `PermFlowDelete = "flow.delete"`
 - `PermFlowRead = "flow.read"`
 - `PermFlowRun = "flow.run"`
