@@ -16,6 +16,7 @@
 
 ## Current Entries
 
+- [2026-04-05_proto-v0.1.7.md](2026-04-05_proto-v0.1.7.md)
 - [2026-04-05_proto-flow-graph-contract-closure.md](2026-04-05_proto-flow-graph-contract-closure.md)
 - [2026-04-02_proto-flow-trigger-dedup-window.md](2026-04-02_proto-flow-trigger-dedup-window.md)
 - [2026-04-02_proto-flow-active-run-limit.md](2026-04-02_proto-flow-active-run-limit.md)
