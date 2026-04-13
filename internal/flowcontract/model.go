@@ -1,5 +1,7 @@
 package flowcontract
 
+// Context: This file supports the Proto source-of-truth workflow around model.
+
 import (
 	"encoding/json"
 	"fmt"

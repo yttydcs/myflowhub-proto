@@ -1,5 +1,7 @@
 package protocolmap
 
+// Context: This file supports the Proto source-of-truth workflow around model.
+
 // ProtocolMap 是从 `protocol/*/types.go` 提取出来的“协议字典视图”（用于生成衍生物）。
 //
 // 说明：
@@ -43,4 +45,3 @@ type Const struct {
 	// Raw literal from Go source, e.g. `"login"` or `0x01`.
 	Raw string
 }
-

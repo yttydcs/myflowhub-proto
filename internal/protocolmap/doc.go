@@ -1,5 +1,7 @@
 package protocolmap
 
+// Context: This file supports the Proto source-of-truth workflow around doc.
+
 import (
 	"bytes"
 	"fmt"
@@ -142,4 +144,3 @@ func DiffHint(oldDoc, newDoc []byte) string {
 func BytesEqualNormalized(a, b []byte) bool {
 	return bytes.Equal([]byte(normalizeNewlines(string(a))), []byte(normalizeNewlines(string(b))))
 }
-

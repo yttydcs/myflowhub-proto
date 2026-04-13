@@ -1,5 +1,7 @@
 package protocolmap
 
+// Context: This file supports the Proto source-of-truth workflow around render.
+
 import (
 	"fmt"
 	"sort"
@@ -84,4 +86,3 @@ func formatOtherConsts(consts []Const) string {
 	}
 	return b.String()
 }
-

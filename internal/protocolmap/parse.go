@@ -1,5 +1,7 @@
 package protocolmap
 
+// Context: This file supports the Proto source-of-truth workflow around parse.
+
 import (
 	"errors"
 	"fmt"
@@ -332,4 +334,3 @@ func upperFirst(s string) string {
 	}
 	return strings.ToUpper(s[:1]) + s[1:]
 }
-

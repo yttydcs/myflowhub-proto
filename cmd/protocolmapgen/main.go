@@ -1,5 +1,7 @@
 package main
 
+// Context: This file supports the Proto source-of-truth workflow around main.
+
 import (
 	"flag"
 	"fmt"
@@ -49,4 +51,3 @@ func main() {
 		_, _ = fmt.Fprintln(os.Stdout, "no change:", *outPath)
 	}
 }
-

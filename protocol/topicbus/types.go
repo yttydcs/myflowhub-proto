@@ -1,5 +1,7 @@
 package topicbus
 
+// Context: This file supports the Proto source-of-truth workflow around types.
+
 import "encoding/json"
 
 const SubProtoTopicBus uint8 = 4

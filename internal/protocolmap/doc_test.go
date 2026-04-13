@@ -1,5 +1,7 @@
 package protocolmap
 
+// Context: This file supports the Proto source-of-truth workflow around doc_test.
+
 import (
 	"os"
 	"path/filepath"
@@ -41,4 +43,3 @@ func findRepoRoot(t *testing.T) string {
 		dir = parent
 	}
 }
-
