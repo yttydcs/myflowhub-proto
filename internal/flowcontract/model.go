@@ -1,6 +1,6 @@
 package flowcontract
 
-// Context: This file supports the Proto source-of-truth workflow around model.
+// 本文件承载 Flow 合同生成流程中与 `model` 相关的逻辑。
 
 import (
 	"encoding/json"
@@ -49,6 +49,7 @@ type FieldDoc struct {
 	Note     string
 }
 
+// BuildContract 从 `protocol/flow/types.go` 的稳定类型集中构造文档合同模型。
 func BuildContract() (*Contract, error) {
 	contract := &Contract{
 		Enums: []EnumDoc{
@@ -112,6 +113,7 @@ func BuildContract() (*Contract, error) {
 	return contract, nil
 }
 
+// buildTypeDoc 将单个 Go struct 反射成文档层使用的字段描述。
 func buildTypeDoc(typ reflect.Type) (TypeDoc, error) {
 	if typ.Kind() != reflect.Struct {
 		return TypeDoc{}, fmt.Errorf("type %s is not a struct", typ.String())
@@ -145,6 +147,7 @@ func buildTypeDoc(typ reflect.Type) (TypeDoc, error) {
 	return doc, nil
 }
 
+// parseJSONTag 提取 JSON 字段名、可选性以及是否需要跳过该字段。
 func parseJSONTag(field reflect.StructField) (name string, optional bool, skip bool) {
 	tag := field.Tag.Get("json")
 	if tag == "-" {
@@ -169,6 +172,7 @@ func parseJSONTag(field reflect.StructField) (name string, optional bool, skip b
 	return name, optional, false
 }
 
+// tsFieldType 优先应用字段级覆盖，再退回通用 TS 类型推导。
 func tsFieldType(typeName string, field reflect.StructField) string {
 	if override, ok := fieldTypeOverrides[fieldKey(typeName, field.Name)]; ok {
 		return override
@@ -176,6 +180,7 @@ func tsFieldType(typeName string, field reflect.StructField) string {
 	return tsTypeString(field.Type)
 }
 
+// tsTypeString 将 Go 反射类型映射为生成物中的 TS 类型文本。
 func tsTypeString(typ reflect.Type) string {
 	for typ.Kind() == reflect.Pointer {
 		typ = typ.Elem()
@@ -212,6 +217,7 @@ func tsTypeString(typ reflect.Type) string {
 	}
 }
 
+// tsTypeName 负责给稳定类型分配下游可引用的 TS 名称。
 func tsTypeName(typ reflect.Type) string {
 	switch typ {
 	case reflect.TypeOf(protocolflow.Trigger{}):
@@ -256,6 +262,7 @@ func tsTypeName(typ reflect.Type) string {
 	}
 }
 
+// goTypeString 将反射类型转成更接近源码语义的 Go 类型文本。
 func goTypeString(typ reflect.Type) string {
 	switch {
 	case typ == rawMessageType:
@@ -283,10 +290,12 @@ func goTypeString(typ reflect.Type) string {
 	}
 }
 
+// fieldKey 统一生成类型字段级覆盖与备注使用的索引键。
 func fieldKey(typeName, fieldName string) string {
 	return typeName + "." + fieldName
 }
 
+// toStrings 将若干字符串枚举值转换成普通字符串切片，便于渲染器消费。
 func toStrings[T ~string](values []T) []string {
 	out := make([]string, 0, len(values))
 	for _, value := range values {

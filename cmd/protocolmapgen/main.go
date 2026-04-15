@@ -1,6 +1,6 @@
 package main
 
-// Context: This file supports the Proto source-of-truth workflow around main.
+// 本文件提供 `protocolmapgen` 命令入口，用于从 Proto 真相源生成协议映射文档。
 
 import (
 	"flag"
@@ -11,6 +11,7 @@ import (
 	"github.com/yttydcs/myflowhub-proto/internal/protocolmap"
 )
 
+// main 解析命令行参数，并执行协议映射文档的写入或一致性校验。
 func main() {
 	var (
 		protocolRoot = flag.String("protocol-root", "protocol", "protocol root directory (contains subproto folders)")

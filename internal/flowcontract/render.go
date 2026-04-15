@@ -1,6 +1,6 @@
 package flowcontract
 
-// Context: This file supports the Proto source-of-truth workflow around render.
+// 本文件承载 Flow 合同生成流程中与 `render` 相关的逻辑。
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+// RenderAll 串起合同模型构建与双产物渲染，供 CLI 一次生成文档与 TS 文件。
 func RenderAll() (markdown string, typescript string, err error) {
 	contract, err := BuildContract()
 	if err != nil {
@@ -25,6 +26,7 @@ func RenderAll() (markdown string, typescript string, err error) {
 	return markdown, typescript, nil
 }
 
+// RenderMarkdown 将合同模型渲染为供人阅读的 Flow 合同文档。
 func RenderMarkdown(contract *Contract) (string, error) {
 	if contract == nil {
 		return "", fmt.Errorf("nil contract")
@@ -60,6 +62,7 @@ func RenderMarkdown(contract *Contract) (string, error) {
 	return b.String(), nil
 }
 
+// renderNodeMarkdown 单独展开 `Node` 的判别联合结构，避免读者先跳到 TS 才看懂 `spec`。
 func renderNodeMarkdown(b *strings.Builder, contract *Contract) {
 	b.WriteString("### Node\n\n")
 	b.WriteString("| json | Go type | TS type | required | notes |\n")
@@ -73,6 +76,7 @@ func renderNodeMarkdown(b *strings.Builder, contract *Contract) {
 	b.WriteString("| `spec` | `json.RawMessage` | `FlowNodeSpec` | yes | Decode with the type mapped from `kind`. |\n\n")
 }
 
+// renderTypeMarkdown 为普通结构体输出字段表格。
 func renderTypeMarkdown(b *strings.Builder, doc TypeDoc) {
 	b.WriteString("### " + doc.GoName + "\n\n")
 	if doc.Note != "" {
@@ -97,6 +101,7 @@ func renderTypeMarkdown(b *strings.Builder, doc TypeDoc) {
 	b.WriteString("\n")
 }
 
+// RenderTypeScript 将合同模型渲染成下游前端可直接消费的稳定 TS 定义。
 func RenderTypeScript(contract *Contract) (string, error) {
 	if contract == nil {
 		return "", fmt.Errorf("nil contract")
@@ -127,6 +132,7 @@ func RenderTypeScript(contract *Contract) (string, error) {
 	return b.String(), nil
 }
 
+// renderTypeScriptInterface 输出单个结构体的 TS interface。
 func renderTypeScriptInterface(b *strings.Builder, doc TypeDoc) {
 	b.WriteString(fmt.Sprintf("export interface %s {\n", doc.TSName))
 	for _, field := range doc.Fields {
@@ -139,6 +145,7 @@ func renderTypeScriptInterface(b *strings.Builder, doc TypeDoc) {
 	b.WriteString("}\n\n")
 }
 
+// renderNodeTypeScript 生成 `FlowNode` 的 kind-tagged 判别联合定义。
 func renderNodeTypeScript(b *strings.Builder, contract *Contract) {
 	b.WriteString("export interface FlowNodeBase {\n")
 	b.WriteString("  id: string\n")
@@ -166,6 +173,7 @@ func renderNodeTypeScript(b *strings.Builder, contract *Contract) {
 	b.WriteString("\n")
 }
 
+// renderGraphTypeScript 输出顶层图结构，作为前端读写 Flow 草稿的入口类型。
 func renderGraphTypeScript(b *strings.Builder) {
 	b.WriteString("export interface FlowGraph {\n")
 	b.WriteString("  nodes: FlowNode[]\n")
@@ -173,6 +181,7 @@ func renderGraphTypeScript(b *strings.Builder) {
 	b.WriteString("}\n")
 }
 
+// FileChanged 用于 `-check` 模式下判断目标产物是否与当前渲染结果一致。
 func FileChanged(path string, want string) (bool, error) {
 	got, err := os.ReadFile(path)
 	if err != nil {
@@ -184,6 +193,7 @@ func FileChanged(path string, want string) (bool, error) {
 	return string(got) != want, nil
 }
 
+// WriteFileIfChanged 仅在内容实际变化时落盘，避免无意义更新时间戳。
 func WriteFileIfChanged(path string, content string) (bool, error) {
 	changed, err := FileChanged(path, content)
 	if err != nil {
@@ -201,6 +211,7 @@ func WriteFileIfChanged(path string, content string) (bool, error) {
 	return true, nil
 }
 
+// quoteArray 将字符串枚举渲染成 TS `as const` 可用的字面量数组。
 func quoteArray(values []string) string {
 	var parts []string
 	for _, value := range values {

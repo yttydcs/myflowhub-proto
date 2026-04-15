@@ -1,6 +1,6 @@
 package main
 
-// Context: This file supports the Proto source-of-truth workflow around main.
+// 本文件提供 `flowcontractgen` 命令入口，用于从 Proto 真相源生成 Flow 合同文档。
 
 import (
 	"flag"
@@ -11,6 +11,7 @@ import (
 	"github.com/yttydcs/myflowhub-proto/internal/flowcontract"
 )
 
+// main 解析命令行参数，并执行 Flow 合同的写入或一致性校验。
 func main() {
 	var (
 		mdOut = flag.String("md-out", filepath.FromSlash("docs/flow_contract.md"), "output markdown path")

@@ -1,6 +1,6 @@
 package flowcontract
 
-// Context: This file supports the Proto source-of-truth workflow around doc_test.
+// 本文件承载 Flow 合同生成流程中与 `doc` 相关的逻辑。
 
 import (
 	"os"

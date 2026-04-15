@@ -1,6 +1,6 @@
 package protocolmap
 
-// Context: This file supports the Proto source-of-truth workflow around model.
+// 本文件承载协议映射生成流程中与 `model` 相关的逻辑。
 
 // ProtocolMap 是从 `protocol/*/types.go` 提取出来的“协议字典视图”（用于生成衍生物）。
 //

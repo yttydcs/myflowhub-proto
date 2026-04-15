@@ -1,6 +1,6 @@
 package protocolmap
 
-// Context: This file supports the Proto source-of-truth workflow around parse.
+// 本文件承载协议映射生成流程中与 `parse` 相关的逻辑。
 
 import (
 	"errors"
@@ -25,6 +25,7 @@ var displayNameOverrides = map[string]string{
 	"exec":       "Exec",
 }
 
+// ParseProtocolRoot 扫描 `protocol/` 根目录并汇总每个子协议的映射信息。
 func ParseProtocolRoot(protocolRoot string) (*ProtocolMap, error) {
 	protocolRoot = filepath.Clean(protocolRoot)
 	entries, err := os.ReadDir(protocolRoot)
@@ -66,6 +67,7 @@ func ParseProtocolRoot(protocolRoot string) (*ProtocolMap, error) {
 	return &out, nil
 }
 
+// parseProtocolDir 解析单个子协议目录中的包名、常量、动作和值类型列表。
 func parseProtocolDir(dirPath string, dirName string) (*Protocol, error) {
 	files, err := listGoFiles(dirPath)
 	if err != nil {
@@ -195,6 +197,7 @@ func parseProtocolDir(dirPath string, dirName string) (*Protocol, error) {
 	return p, nil
 }
 
+// listGoFiles 返回目录下参与协议扫描的非测试 Go 文件。
 func listGoFiles(dirPath string) ([]string, error) {
 	ents, err := os.ReadDir(dirPath)
 	if err != nil {
@@ -218,6 +221,7 @@ func listGoFiles(dirPath string) ([]string, error) {
 	return files, nil
 }
 
+// parseConstDecl 解析一个 const 声明块，并尽量沿用前一条隐式赋值规则。
 func parseConstDecl(gen *ast.GenDecl, known map[string]Const) ([]Const, error) {
 	if gen == nil || gen.Tok != token.CONST {
 		return nil, nil
@@ -269,6 +273,7 @@ func parseConstDecl(gen *ast.GenDecl, known map[string]Const) ([]Const, error) {
 	return out, nil
 }
 
+// evalConstExpr 计算协议映射生成器支持的常量字面量与标识符引用。
 func evalConstExpr(expr ast.Expr, known map[string]Const) (Const, error) {
 	switch e := expr.(type) {
 	case *ast.BasicLit:
@@ -328,6 +333,7 @@ func evalConstExpr(expr ast.Expr, known map[string]Const) (Const, error) {
 	}
 }
 
+// upperFirst 为缺省展示名提供最小的人类可读格式。
 func upperFirst(s string) string {
 	if s == "" {
 		return s

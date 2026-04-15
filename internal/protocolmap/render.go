@@ -1,6 +1,6 @@
 package protocolmap
 
-// Context: This file supports the Proto source-of-truth workflow around render.
+// 本文件承载协议映射生成流程中与 `render` 相关的逻辑。
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// RenderGeneratedMarkdown 将协议映射模型渲染为 `docs/protocol_map.md` 的生成区块。
 func RenderGeneratedMarkdown(pm *ProtocolMap) (string, error) {
 	if pm == nil {
 		return "", fmt.Errorf("nil protocol map")
@@ -60,6 +61,7 @@ func RenderGeneratedMarkdown(pm *ProtocolMap) (string, error) {
 	return b.String(), nil
 }
 
+// formatOtherConsts 统一渲染非 action / 非 SubProto 常量，便于查阅协议辅助枚举。
 func formatOtherConsts(consts []Const) string {
 	if len(consts) == 0 {
 		return ""

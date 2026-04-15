@@ -1,6 +1,6 @@
 package file
 
-// Context: This file supports the Proto source-of-truth workflow around types.
+// 本文件定义 Proto 中 `file` 子协议的稳定类型与载荷结构。
 
 import "encoding/json"
 
